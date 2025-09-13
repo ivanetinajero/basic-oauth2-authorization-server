@@ -1,4 +1,4 @@
-package com.irojas.oauth.resourceserver.Controllers;
+package dev.ivantd.app.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

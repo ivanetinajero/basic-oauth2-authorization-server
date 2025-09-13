@@ -1,4 +1,4 @@
-package com.irojas.oauth.resourceserver.oauth;
+package dev.ivantd.app.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

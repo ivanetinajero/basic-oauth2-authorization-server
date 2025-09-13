@@ -1,4 +1,4 @@
-package com.irojas.oauth.oauthserver.oauth;
+package dev.ivantd.app.security;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

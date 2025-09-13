@@ -1,13 +1,13 @@
-package com.irojas.oauth.oauthserver;
+package dev.ivantd.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OauthServerApplication {
+public class ResourceServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OauthServerApplication.class, args);
+		SpringApplication.run(ResourceServerApplication.class, args);
 	}
 
 }
