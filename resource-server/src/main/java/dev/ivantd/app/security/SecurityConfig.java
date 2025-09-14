@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.GET, "/resources/**").hasAnyAuthority("SCOPE_read")
+                .requestMatchers(HttpMethod.GET, "/resources/**").hasAnyAuthority("SCOPE_read", "SCOPE_write")
                 .requestMatchers(HttpMethod.POST, "/resources/**").hasAuthority("SCOPE_write")
                 .anyRequest().authenticated())
             .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
