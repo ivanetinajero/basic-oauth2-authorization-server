@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -68,7 +69,7 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-	@Bean 
+	@Bean
 	@Order(2)
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 			throws Exception {
@@ -86,21 +87,26 @@ public class SecurityConfig {
 
 	@Bean 
 	public UserDetailsService userDetailsService() {
-		UserDetails userDetails = User.builder()
-				.username("iva")
-				.password("{noop}123456")
-				.roles("USER")
+		UserDetails userDetails1 = User.builder()
+				.username("itinajero")
+				.password("{noop}admin")
+				.roles("USER", "ADMIN")
 				.build();
 
-		return new InMemoryUserDetailsManager(userDetails);
+		UserDetails userDetails2 = User.builder()
+				.username("maria")
+				.password("{noop}password")
+				.roles("USER")
+				.build();
+		return new InMemoryUserDetailsManager(userDetails1, userDetails2);
 	}
 
 	@Bean 
 	public RegisteredClientRepository registeredClientRepository() {
 			
 			RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("oidc-client")
-				.clientSecret("{noop}123456789")
+				.clientId("oauthdebugger")
+				.clientSecret("{noop}123456")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
@@ -110,11 +116,13 @@ public class SecurityConfig {
 				.scope(OidcScopes.PROFILE)
 				.scope("read")
 				.scope("write")
+				// Para que pida consentimiento al usuario
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
 				.build();
 
 			RegisteredClient oauthClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId("oauth-client")
-				.clientSecret("{noop}12345678910")
+				.clientSecret("{noop}654321")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
@@ -125,6 +133,7 @@ public class SecurityConfig {
 				.scope(OidcScopes.PROFILE)
 				.scope("read")
 				.scope("write")
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
 				.build();
 
 		return new InMemoryRegisteredClientRepository(oidcClient,oauthClient);
